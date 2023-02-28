@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "hcR9LOFAx5vtssKaUhw97xuWLu0qkH67HJk9Bq4h4TYLpjKWI0FEjlYV7v6CZtVFxo2i4jM1AkwaYSQ+oLstsA==",
+  "dgSpecHash": "aQIR7NZhCm8rN7nExJGS6+qgYCURFzxlV0wiVcK0WbYz2JwwJU1wL215VqP5AugMR5NzBVGDRgJYYQRv7NQ/Hw==",
   "success": true,
-  "projectFilePath": "C:\\BizData\\source\\WebAPI_PASS_KOREA_2023_03\\WebAPI.csproj",
+  "projectFilePath": "C:\\BizData\\source\\PASS_Korea_seminar_202303\\WebAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\JungwooKim\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
     "C:\\Users\\JungwooKim\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
