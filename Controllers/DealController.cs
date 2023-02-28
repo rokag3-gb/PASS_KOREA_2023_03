@@ -23,11 +23,10 @@ namespace WebAPI_PASS_KOREA_2023_03
         {
             if (string.IsNullOrWhiteSpace(DealDateStart))
                 DealDateStart = DateTime.Now.ToString("yyyy-MM-dd");
-
+            
             if (string.IsNullOrWhiteSpace(DealDateEnd))
                 DealDateEnd = DateTime.Now.ToString("yyyy-MM-dd");
-
-            using (var conn = new SqlConnection(Secret.conn_str_public_endpoint))
+            try
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine("select  d.DealId");
@@ -43,9 +42,50 @@ namespace WebAPI_PASS_KOREA_2023_03
                 sb.AppendLine("where   d.DealDate between @DealDateStart and @DealDateEnd");
                 sb.AppendLine("order by d.DealDate, d.DealId;");
 
-                var deals = await conn.QueryAsync<DealModel>(sb.ToString(), new { DealDateStart = DealDateStart, DealDateEnd = DealDateEnd });
+                using (var conn = new SqlConnection(Secret.conn_str_public_endpoint))
+                {
+                    var deals = await conn.QueryAsync<DealModel>(sb.ToString(), new { DealDateStart = DealDateStart, DealDateEnd = DealDateEnd });
 
-                return deals;
+                    return deals;
+                }
+            }
+            catch (Exception ex)
+            {
+                //return StatusCode(500, ex.Message);
+                throw ex;
+            }
+        }
+
+        // POST action
+        [HttpPost]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Consumes(MediaTypeNames.Application.Json)]
+        public ActionResult<DealModel> Create(DealModel deal)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("insert into db1.dbo.Deal (DealDate, Item, UserId, Amount, Tax, Note)");
+                sb.AppendLine("values (@DealDate, @Item, @UserId, @Amount, @Tax, @Note);");
+
+                var param = new DynamicParameters();
+                param.Add("DealDate", deal.DealDate);
+                param.Add("Item", deal.Item.Trim());
+                param.Add("UserId", deal.UserId?.ToString());
+                param.Add("Amount", deal.Amount);
+                param.Add("Tax", deal.Tax);
+                param.Add("Note", deal.Note);
+
+                using (var conn = new SqlConnection(Secret.conn_str_public_endpoint))
+                {
+                    conn.Execute(sb.ToString(), param);
+                }
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
             }
         }
     }
