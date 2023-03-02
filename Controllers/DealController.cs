@@ -36,7 +36,7 @@ namespace WebAPI
         [Route("/Deal/public_endpoint/")]
         //[HttpGet(Name = "GetDeal_PublicEndpoint")]
         [HttpGet]
-        public async Task<IEnumerable<DealModel>> GetDeal_PublicEndpoint(
+        public async Task<IEnumerable<DealModel>> GetDeal_public_endpoint(
             string DealDateStart = null
             , string DealDateEnd = null)
         {
@@ -58,15 +58,14 @@ namespace WebAPI
         }
 
         [Route("/Deal/local_endpoint/")]
-        //[HttpGet(Name = "GetDeal_LocalEndpoint")]
         [HttpGet]
-        public async Task<IEnumerable<DealModel>> GetDeal_LocalEndpoint(
+        public async Task<IEnumerable<DealModel>> GetDeal_local_endpoint(
             string DealDateStart = null
             , string DealDateEnd = null)
         {
             try
             {
-                using (var conn = new SqlConnection(Secret.conn_str_public_endpoint))
+                using (var conn = new SqlConnection(Secret.conn_str_local_endpoint))
                 {
                     var deals = await conn.QueryAsync<DealModel>(sb_query.ToString()
                         , new { DealDateStart = DealDateStart, DealDateEnd = DealDateEnd }
@@ -81,8 +80,55 @@ namespace WebAPI
             }
         }
 
+        [Route("/Deal/readwrite_listener/")]
+        [HttpGet]
+        public async Task<IEnumerable<DealModel>> GetDeal_readwrite_listener(
+            string DealDateStart = null
+            , string DealDateEnd = null)
+        {
+            try
+            {
+                using (var conn = new SqlConnection(Secret.conn_str_readwrite_listener))
+                {
+                    var deals = await conn.QueryAsync<DealModel>(sb_query.ToString()
+                        , new { DealDateStart = DealDateStart, DealDateEnd = DealDateEnd }
+                        );
+
+                    return deals;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [Route("/Deal/readonly_listener/")]
+        [HttpGet]
+        public async Task<IEnumerable<DealModel>> GetDeal_readonly_listener(
+            string DealDateStart = null
+            , string DealDateEnd = null)
+        {
+            try
+            {
+                using (var conn = new SqlConnection(Secret.conn_str_readonly_listener))
+                {
+                    var deals = await conn.QueryAsync<DealModel>(sb_query.ToString()
+                        , new { DealDateStart = DealDateStart, DealDateEnd = DealDateEnd }
+                        );
+
+                    return deals;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [Route("/Deal/public_endpoint/")]
         [HttpPost]
-        public ActionResult<DealModel> Insert_Public_Endpoint(DealModel deal)
+        public ActionResult<DealModel> Insert_public_endpoint(DealModel deal)
         {
             try
             {
@@ -95,6 +141,87 @@ namespace WebAPI
                 param.Add("Note", deal.Note);
 
                 using (var conn = new SqlConnection(Secret.conn_str_public_endpoint))
+                {
+                    conn.Execute(sb_command.ToString(), param);
+                }
+
+                return NoContent(); // 204
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [Route("/Deal/local_endpoint/")]
+        [HttpPost]
+        public ActionResult<DealModel> Insert_local_endpoint(DealModel deal)
+        {
+            try
+            {
+                var param = new DynamicParameters();
+                param.Add("DealDate", deal.DealDate);
+                param.Add("Item", deal.Item.Trim());
+                param.Add("UserId", deal.UserId?.ToString());
+                param.Add("Amount", deal.Amount);
+                param.Add("Tax", deal.Tax);
+                param.Add("Note", deal.Note);
+
+                using (var conn = new SqlConnection(Secret.conn_str_local_endpoint))
+                {
+                    conn.Execute(sb_command.ToString(), param);
+                }
+
+                return NoContent(); // 204
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [Route("/Deal/readwrite_listener/")]
+        [HttpPost]
+        public ActionResult<DealModel> Insert_readwrite_listener(DealModel deal)
+        {
+            try
+            {
+                var param = new DynamicParameters();
+                param.Add("DealDate", deal.DealDate);
+                param.Add("Item", deal.Item.Trim());
+                param.Add("UserId", deal.UserId?.ToString());
+                param.Add("Amount", deal.Amount);
+                param.Add("Tax", deal.Tax);
+                param.Add("Note", deal.Note);
+
+                using (var conn = new SqlConnection(Secret.conn_str_readwrite_listener))
+                {
+                    conn.Execute(sb_command.ToString(), param);
+                }
+
+                return NoContent(); // 204
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [Route("/Deal/readonly_listener/")]
+        [HttpPost]
+        public ActionResult<DealModel> Insert_readonly_listener(DealModel deal)
+        {
+            try
+            {
+                var param = new DynamicParameters();
+                param.Add("DealDate", deal.DealDate);
+                param.Add("Item", deal.Item.Trim());
+                param.Add("UserId", deal.UserId?.ToString());
+                param.Add("Amount", deal.Amount);
+                param.Add("Tax", deal.Tax);
+                param.Add("Note", deal.Note);
+
+                using (var conn = new SqlConnection(Secret.conn_str_readonly_listener))
                 {
                     conn.Execute(sb_command.ToString(), param);
                 }
