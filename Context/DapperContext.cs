@@ -8,7 +8,8 @@
         public DapperContext(IConfiguration configuration)
         {
             _configuration = configuration;
-            _connectionString = _configuration.GetConnectionString(Secret.conn_str_public_endpoint);
         }
+
+        public IDbConnection CreateConnection(string _conn_str) => new SqlConnection(_conn_str);
     }
 }

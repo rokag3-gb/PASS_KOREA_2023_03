@@ -11,13 +11,14 @@ namespace WebAPI
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddSingleton<DapperContext>();
             builder.WebHost.ConfigureKestrel(opt => {
                 opt.ListenAnyIP(5000);
             });
             
             var app = builder.Build();
 
-            app.MapGet("/HelloWorld", (string name) => $"Hello World! {name}. Minimal API는 이렇게 쓰는겁니다.");
+            app.MapGet("/HelloWorld", (string name) => $"Hello World! {name}. Minimal API는 이렇게 쓰는겁니다.\r\n\r\n{Secret.conn_str_public_endpoint}");
             
             // Configure the HTTP request pipeline.
             //if (app.Environment.IsDevelopment())

@@ -4,14 +4,17 @@ namespace WebAPI
     [Route("[controller]")]
     public class DealController : ControllerBase
     {
+        private readonly DapperContext _context;
         private readonly ILogger<DealController> _logger;
 
         private StringBuilder sb_query = new StringBuilder();
         private StringBuilder sb_command = new StringBuilder();
 
         public DealController(
-            ILogger<DealController> logger)
+            DapperContext context
+            , ILogger<DealController> logger)
         {
+            _context = context;
             _logger = logger;
 
             // Select query
@@ -34,16 +37,22 @@ namespace WebAPI
         }
         
         [Route("/Deal/public_endpoint/")]
-        //[HttpGet(Name = "GetDeal_PublicEndpoint")]
         [HttpGet]
         public async Task<IEnumerable<DealModel>> GetDeal_public_endpoint(
             string DealDateStart = null
             , string DealDateEnd = null)
         {
+            string conn_str = Secret.conn_str_public_endpoint;
+
+            Console.WriteLine($"conn.ConnectionString = {conn_str}");
+
             try
             {
-                using (var conn = new SqlConnection(Secret.conn_str_public_endpoint))
+                using (IDbConnection conn = _context.CreateConnection(conn_str))
                 {
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+
                     var deals = await conn.QueryAsync<DealModel>(sb_query.ToString()
                         , new { DealDateStart = DealDateStart, DealDateEnd = DealDateEnd }
                         );
@@ -63,10 +72,17 @@ namespace WebAPI
             string DealDateStart = null
             , string DealDateEnd = null)
         {
+            string conn_str = Secret.conn_str_local_endpoint;
+
+            Console.WriteLine($"conn.ConnectionString = {conn_str}");
+
             try
             {
-                using (var conn = new SqlConnection(Secret.conn_str_local_endpoint))
+                using (IDbConnection conn = _context.CreateConnection(conn_str))
                 {
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+
                     var deals = await conn.QueryAsync<DealModel>(sb_query.ToString()
                         , new { DealDateStart = DealDateStart, DealDateEnd = DealDateEnd }
                         );
@@ -86,10 +102,17 @@ namespace WebAPI
             string DealDateStart = null
             , string DealDateEnd = null)
         {
+            string conn_str = Secret.conn_str_readwrite_listener;
+
+            Console.WriteLine($"conn.ConnectionString = {conn_str}");
+
             try
             {
-                using (var conn = new SqlConnection(Secret.conn_str_readwrite_listener))
+                using (IDbConnection conn = _context.CreateConnection(conn_str))
                 {
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+
                     var deals = await conn.QueryAsync<DealModel>(sb_query.ToString()
                         , new { DealDateStart = DealDateStart, DealDateEnd = DealDateEnd }
                         );
@@ -109,10 +132,17 @@ namespace WebAPI
             string DealDateStart = null
             , string DealDateEnd = null)
         {
+            string conn_str = Secret.conn_str_readonly_listener;
+
+            Console.WriteLine($"conn.ConnectionString = {conn_str}");
+
             try
             {
-                using (var conn = new SqlConnection(Secret.conn_str_readonly_listener))
+                using (IDbConnection conn = _context.CreateConnection(conn_str))
                 {
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+
                     var deals = await conn.QueryAsync<DealModel>(sb_query.ToString()
                         , new { DealDateStart = DealDateStart, DealDateEnd = DealDateEnd }
                         );
@@ -130,6 +160,10 @@ namespace WebAPI
         [HttpPost]
         public ActionResult<DealModel> Insert_public_endpoint(DealModel deal)
         {
+            string conn_str = Secret.conn_str_public_endpoint;
+
+            Console.WriteLine($"conn.ConnectionString = {conn_str}");
+
             try
             {
                 var param = new DynamicParameters();
@@ -140,7 +174,7 @@ namespace WebAPI
                 param.Add("Tax", deal.Tax);
                 param.Add("Note", deal.Note);
 
-                using (var conn = new SqlConnection(Secret.conn_str_public_endpoint))
+                using (IDbConnection conn = _context.CreateConnection(conn_str))
                 {
                     conn.Execute(sb_command.ToString(), param);
                 }
@@ -157,6 +191,10 @@ namespace WebAPI
         [HttpPost]
         public ActionResult<DealModel> Insert_local_endpoint(DealModel deal)
         {
+            string conn_str = Secret.conn_str_local_endpoint;
+
+            Console.WriteLine($"conn.ConnectionString = {conn_str}");
+
             try
             {
                 var param = new DynamicParameters();
@@ -167,7 +205,7 @@ namespace WebAPI
                 param.Add("Tax", deal.Tax);
                 param.Add("Note", deal.Note);
 
-                using (var conn = new SqlConnection(Secret.conn_str_local_endpoint))
+                using (IDbConnection conn = _context.CreateConnection(conn_str))
                 {
                     conn.Execute(sb_command.ToString(), param);
                 }
@@ -184,6 +222,10 @@ namespace WebAPI
         [HttpPost]
         public ActionResult<DealModel> Insert_readwrite_listener(DealModel deal)
         {
+            string conn_str = Secret.conn_str_readwrite_listener;
+
+            Console.WriteLine($"conn.ConnectionString = {conn_str}");
+
             try
             {
                 var param = new DynamicParameters();
@@ -194,7 +236,7 @@ namespace WebAPI
                 param.Add("Tax", deal.Tax);
                 param.Add("Note", deal.Note);
 
-                using (var conn = new SqlConnection(Secret.conn_str_readwrite_listener))
+                using (IDbConnection conn = _context.CreateConnection(conn_str))
                 {
                     conn.Execute(sb_command.ToString(), param);
                 }
@@ -211,6 +253,10 @@ namespace WebAPI
         [HttpPost]
         public ActionResult<DealModel> Insert_readonly_listener(DealModel deal)
         {
+            string conn_str = Secret.conn_str_readwrite_listener;
+
+            Console.WriteLine($"conn.ConnectionString = {conn_str}");
+
             try
             {
                 var param = new DynamicParameters();
@@ -221,7 +267,7 @@ namespace WebAPI
                 param.Add("Tax", deal.Tax);
                 param.Add("Note", deal.Note);
 
-                using (var conn = new SqlConnection(Secret.conn_str_readonly_listener))
+                using (IDbConnection conn = _context.CreateConnection(conn_str))
                 {
                     conn.Execute(sb_command.ToString(), param);
                 }
