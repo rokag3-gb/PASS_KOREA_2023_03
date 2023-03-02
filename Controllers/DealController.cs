@@ -44,7 +44,7 @@ namespace WebAPI
         {
             string conn_str = Secret.conn_str_public_endpoint;
 
-            Console.WriteLine($"conn.ConnectionString = {conn_str}");
+            Console.WriteLine($"conn.ConnectionString = {conn_str.Split(';')?.GetValue(0)?.ToString()}");
 
             try
             {
@@ -74,7 +74,7 @@ namespace WebAPI
         {
             string conn_str = Secret.conn_str_local_endpoint;
 
-            Console.WriteLine($"conn.ConnectionString = {conn_str}");
+            Console.WriteLine($"conn.ConnectionString = {conn_str.Split(';')?.GetValue(0)?.ToString()}");
 
             try
             {
@@ -104,7 +104,7 @@ namespace WebAPI
         {
             string conn_str = Secret.conn_str_readwrite_listener;
 
-            Console.WriteLine($"conn.ConnectionString = {conn_str}");
+            Console.WriteLine($"conn.ConnectionString = {conn_str.Split(';')?.GetValue(0)?.ToString()}");
 
             try
             {
@@ -134,7 +134,7 @@ namespace WebAPI
         {
             string conn_str = Secret.conn_str_readonly_listener;
 
-            Console.WriteLine($"conn.ConnectionString = {conn_str}");
+            Console.WriteLine($"conn.ConnectionString = {conn_str.Split(';')?.GetValue(0)?.ToString()}");
 
             try
             {
@@ -162,7 +162,7 @@ namespace WebAPI
         {
             string conn_str = Secret.conn_str_public_endpoint;
 
-            Console.WriteLine($"conn.ConnectionString = {conn_str}");
+            Console.WriteLine($"conn.ConnectionString = {conn_str.Split(';')?.GetValue(0)?.ToString()}");
 
             try
             {
@@ -193,7 +193,7 @@ namespace WebAPI
         {
             string conn_str = Secret.conn_str_local_endpoint;
 
-            Console.WriteLine($"conn.ConnectionString = {conn_str}");
+            Console.WriteLine($"conn.ConnectionString = {conn_str.Split(';')?.GetValue(0)?.ToString()}");
 
             try
             {
@@ -224,7 +224,7 @@ namespace WebAPI
         {
             string conn_str = Secret.conn_str_readwrite_listener;
 
-            Console.WriteLine($"conn.ConnectionString = {conn_str}");
+            Console.WriteLine($"conn.ConnectionString = {conn_str.Split(';')?.GetValue(0)?.ToString()}");
 
             try
             {
@@ -255,7 +255,7 @@ namespace WebAPI
         {
             string conn_str = Secret.conn_str_readwrite_listener;
 
-            Console.WriteLine($"conn.ConnectionString = {conn_str}");
+            Console.WriteLine($"conn.ConnectionString = {conn_str.Split(';')?.GetValue(0)?.ToString()}");
 
             try
             {
