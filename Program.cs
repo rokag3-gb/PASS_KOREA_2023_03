@@ -1,4 +1,4 @@
-namespace WebAPI_PASS_KOREA_2023_03
+namespace WebAPI
 {
     public class Program
     {
@@ -9,15 +9,16 @@ namespace WebAPI_PASS_KOREA_2023_03
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.WebHost.ConfigureKestrel(opt => {
-                opt.ListenAnyIP(5000); // 특정 5000번 포트로 항상 수신대기
+                opt.ListenAnyIP(5000);
             });
             
             var app = builder.Build();
 
+            app.MapGet("/HelloWorld", (string name) => $"Hello World! {name}. Minimal API는 이렇게 쓰는겁니다.");
+            
             // Configure the HTTP request pipeline.
             //if (app.Environment.IsDevelopment())
             //{

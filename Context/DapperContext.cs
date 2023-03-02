@@ -1,7 +1,4 @@
-﻿using System.Data;
-using Microsoft.Extensions.Configuration;
-
-namespace WebAPI
+﻿namespace WebAPI
 {
     public class DapperContext
     {

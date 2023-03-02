@@ -1,8 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using System.Data.SqlClient;
-using System.Text;
-using Dapper;
-
 namespace WebAPI
 {
     [ApiController]
@@ -37,9 +32,35 @@ namespace WebAPI
             sb_command.AppendLine("insert into db1.dbo.Deal (DealDate, Item, UserId, Amount, Tax, Note)");
             sb_command.AppendLine("values (@DealDate, @Item, @UserId, @Amount, @Tax, @Note);");
         }
+        
+        [Route("/Deal/public_endpoint/")]
+        //[HttpGet(Name = "GetDeal_PublicEndpoint")]
+        [HttpGet]
+        public async Task<IEnumerable<DealModel>> GetDeal_PublicEndpoint(
+            string DealDateStart = null
+            , string DealDateEnd = null)
+        {
+            try
+            {
+                using (var conn = new SqlConnection(Secret.conn_str_public_endpoint))
+                {
+                    var deals = await conn.QueryAsync<DealModel>(sb_query.ToString()
+                        , new { DealDateStart = DealDateStart, DealDateEnd = DealDateEnd }
+                        );
 
-        [HttpGet(Name = "GetDeal")]
-        public async Task<IEnumerable<DealModel>> GetDealAsync(
+                    return deals;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [Route("/Deal/local_endpoint/")]
+        //[HttpGet(Name = "GetDeal_LocalEndpoint")]
+        [HttpGet]
+        public async Task<IEnumerable<DealModel>> GetDeal_LocalEndpoint(
             string DealDateStart = null
             , string DealDateEnd = null)
         {
@@ -61,7 +82,7 @@ namespace WebAPI
         }
 
         [HttpPost]
-        public ActionResult<DealModel> Insert(DealModel deal)
+        public ActionResult<DealModel> Insert_Public_Endpoint(DealModel deal)
         {
             try
             {
