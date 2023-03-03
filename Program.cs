@@ -17,8 +17,11 @@ namespace WebAPI
             });
             
             var app = builder.Build();
-
-            app.MapGet("/HelloWorld", (string name) => $"Hello World! {name}. Minimal API는 이렇게 쓰는겁니다.\r\n\r\n{Secret.conn_str_public_endpoint}");
+            
+            // Minimal API test
+            app.MapGet("/HelloWorld", (string name) =>
+                $"Hello World! {name}. Minimal API는 이렇게 쓰는겁니다.\r\n{Secret.conn_str_sqlmi_public_primary}"
+            );
             
             // Configure the HTTP request pipeline.
             //if (app.Environment.IsDevelopment())
