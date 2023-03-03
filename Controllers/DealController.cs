@@ -57,6 +57,9 @@ namespace WebAPI
                         , new { DealDateStart = DealDateStart, DealDateEnd = DealDateEnd }
                         );
 
+                    if (conn.State == ConnectionState.Open)
+                        conn.Close();
+
                     return deals;
                 }
             }
@@ -86,6 +89,9 @@ namespace WebAPI
                     var deals = await conn.QueryAsync<DealModel>(sb_query.ToString()
                         , new { DealDateStart = DealDateStart, DealDateEnd = DealDateEnd }
                         );
+
+                    if (conn.State == ConnectionState.Open)
+                        conn.Close();
 
                     return deals;
                 }
@@ -117,6 +123,9 @@ namespace WebAPI
                         , new { DealDateStart = DealDateStart, DealDateEnd = DealDateEnd }
                         );
 
+                    if (conn.State == ConnectionState.Open)
+                        conn.Close();
+
                     return deals;
                 }
             }
@@ -147,6 +156,9 @@ namespace WebAPI
                         , new { DealDateStart = DealDateStart, DealDateEnd = DealDateEnd }
                         );
 
+                    if (conn.State == ConnectionState.Open)
+                        conn.Close();
+
                     return deals;
                 }
             }
@@ -158,7 +170,7 @@ namespace WebAPI
 
         [Route("/Deal/public_endpoint/")]
         [HttpPost]
-        public ActionResult<DealModel> Insert_public_endpoint(DealModel deal)
+        public async Task<ActionResult> Insert_public_endpoint(DealModel deal)
         {
             string conn_str = Secret.conn_str_public_endpoint;
 
@@ -174,11 +186,20 @@ namespace WebAPI
                 param.Add("Tax", deal.Tax);
                 param.Add("Note", deal.Note);
 
+                int effected_row = 0;
+
                 using (IDbConnection conn = _context.CreateConnection(conn_str))
                 {
-                    conn.Execute(sb_command.ToString(), param);
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+
+                    effected_row = conn.Execute(sb_command.ToString(), param);
+
+                    if (conn.State == ConnectionState.Open)
+                        conn.Close();
                 }
 
+                return StatusCode(200, $"effected_row = {effected_row}");
                 return NoContent(); // 204
             }
             catch (Exception ex)
@@ -189,7 +210,7 @@ namespace WebAPI
 
         [Route("/Deal/local_endpoint/")]
         [HttpPost]
-        public ActionResult<DealModel> Insert_local_endpoint(DealModel deal)
+        public async Task<ActionResult> Insert_local_endpoint(DealModel deal)
         {
             string conn_str = Secret.conn_str_local_endpoint;
 
@@ -205,12 +226,20 @@ namespace WebAPI
                 param.Add("Tax", deal.Tax);
                 param.Add("Note", deal.Note);
 
+                int effected_row = 0;
+
                 using (IDbConnection conn = _context.CreateConnection(conn_str))
                 {
-                    conn.Execute(sb_command.ToString(), param);
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+
+                    effected_row = conn.Execute(sb_command.ToString(), param);
+
+                    if (conn.State == ConnectionState.Open)
+                        conn.Close();
                 }
 
-                return NoContent(); // 204
+                return StatusCode(200, $"effected_row = {effected_row}");
             }
             catch (Exception ex)
             {
@@ -236,12 +265,20 @@ namespace WebAPI
                 param.Add("Tax", deal.Tax);
                 param.Add("Note", deal.Note);
 
+                int effected_row = 0;
+
                 using (IDbConnection conn = _context.CreateConnection(conn_str))
                 {
-                    conn.Execute(sb_command.ToString(), param);
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+
+                    effected_row = conn.Execute(sb_command.ToString(), param);
+
+                    if (conn.State == ConnectionState.Open)
+                        conn.Close();
                 }
 
-                return NoContent(); // 204
+                return StatusCode(200, $"effected_row = {effected_row}");
             }
             catch (Exception ex)
             {
@@ -253,7 +290,7 @@ namespace WebAPI
         [HttpPost]
         public ActionResult<DealModel> Insert_readonly_listener(DealModel deal)
         {
-            string conn_str = Secret.conn_str_readwrite_listener;
+            string conn_str = Secret.conn_str_readonly_listener;
 
             Console.WriteLine($"conn.ConnectionString = {conn_str.Split(';')?.GetValue(0)?.ToString()}");
 
@@ -267,12 +304,20 @@ namespace WebAPI
                 param.Add("Tax", deal.Tax);
                 param.Add("Note", deal.Note);
 
+                int effected_row = 0;
+
                 using (IDbConnection conn = _context.CreateConnection(conn_str))
                 {
-                    conn.Execute(sb_command.ToString(), param);
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+
+                    effected_row = conn.Execute(sb_command.ToString(), param);
+
+                    if (conn.State == ConnectionState.Open)
+                        conn.Close();
                 }
 
-                return NoContent(); // 204
+                return StatusCode(200, $"effected_row = {effected_row}");
             }
             catch (Exception ex)
             {
