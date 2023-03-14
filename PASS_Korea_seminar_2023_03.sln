@@ -5,7 +5,7 @@ VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI.csproj", "{9A1E26FB-5406-48EE-998C-660F08F1B316}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormsApp1", "FormsApp1\FormsApp1.csproj", "{1183316C-6858-4F8B-A4E2-9B41E1184CF6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormsApp1", "..\FormsApp1\FormsApp1.csproj", "{1183316C-6858-4F8B-A4E2-9B41E1184CF6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

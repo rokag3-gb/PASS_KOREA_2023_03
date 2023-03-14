@@ -3,6 +3,7 @@ namespace WebAPI
     public class DealModel
     {
         public Int64 DealId { get; set; }
+        public Int64 DateSeq { get; set; }
         public DateTime DealDate { get; set; }
         public string Item { get; set; }
         public object UserId { get; set; }
