@@ -11,7 +11,11 @@ namespace WebAPI
         public decimal? Tax { get; set; }
         public decimal? Total => Amount + Tax;
         //public decimal? Total { get; set; }
+        public decimal? AmountDaySum { get; set; }
+        public decimal? AmountDayPercent { get; set; }
+        public decimal? AmountDaySubTotal { get; set; }
         public string? Note { get; set; }
+        public string? ServerName { get; set; }
         public DateTime CreateAt { get; set; }
     }
 }
