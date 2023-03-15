@@ -213,6 +213,10 @@ namespace WebAPI
         [HttpPost]
         public async Task<ActionResult> Insert_sqldb_fog_readwrite(DealModel deal)
         {
+            //DnsUtils.FlushCache();
+            //Dns.GetHostEntry(Secret.sqldb_fog_readwrite_listener.Split(',').GetValue(0).ToString());
+            //Dns.GetHostEntry(Secret.sqldb_fog_readonly_listener.Split(',').GetValue(0).ToString());
+
             string conn_str = Secret.conn_str_sqldb_fog_readwrite_listener;
             //Console.WriteLine($"conn.ConnectionString = {conn_str.Split(';')?.GetValue(0)?.ToString()}");
 
@@ -250,6 +254,10 @@ namespace WebAPI
         [HttpPost]
         public async Task<ActionResult> Insert_sqldb_fog_readonly(DealModel deal)
         {
+            //DnsUtils.FlushCache();
+            //Dns.GetHostEntry(Secret.sqldb_fog_readwrite_listener.Split(',').GetValue(0).ToString());
+            //Dns.GetHostEntry(Secret.sqldb_fog_readonly_listener.Split(',').GetValue(0).ToString());
+
             string conn_str = Secret.conn_str_sqldb_fog_readonly_listener;
             //Console.WriteLine($"conn.ConnectionString = {conn_str.Split(';')?.GetValue(0)?.ToString()}");
 

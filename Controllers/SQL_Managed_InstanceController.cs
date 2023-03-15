@@ -347,6 +347,14 @@ namespace WebAPI
         [HttpPost]
         public async Task<ActionResult> Insert_sqlmi_fog_readwrite(DealModel deal)
         {
+            //ServicePointManager.DnsRefreshTimeout = 0; // DNS cache 갱신 주기
+            //Dns.GetHostEntry("sqlmi-fog-pass-korea.b4ba26535d3d.database.windows.net");
+            //Dns.GetHostEntry("sqlmi-fog-pass-korea.secondary.b4ba26535d3d.database.windows.net");
+            
+            //DnsUtils.FlushCache();
+            //Dns.GetHostEntry(Secret.sqlmi_fog_readwrite_listener.Split(',').GetValue(0).ToString());
+            //Dns.GetHostEntry(Secret.sqlmi_fog_readonly_listener.Split(',').GetValue(0).ToString());
+
             string conn_str = Secret.conn_str_sqlmi_fog_readwrite_listener;
             //Console.WriteLine($"conn.ConnectionString = {conn_str.Split(';')?.GetValue(0)?.ToString()}");
 
@@ -384,6 +392,14 @@ namespace WebAPI
         [HttpPost]
         public async Task<ActionResult> Insert_sqlmi_fog_readonly(DealModel deal)
         {
+            //ServicePointManager.DnsRefreshTimeout = 0; // DNS cache 갱신 주기
+            //Dns.GetHostEntry("sqlmi-fog-pass-korea.b4ba26535d3d.database.windows.net");
+            //Dns.GetHostEntry("sqlmi-fog-pass-korea.secondary.b4ba26535d3d.database.windows.net");
+
+            //DnsUtils.FlushCache();
+            //Dns.GetHostEntry(Secret.sqlmi_fog_readwrite_listener.Split(',').GetValue(0).ToString());
+            //Dns.GetHostEntry(Secret.sqlmi_fog_readonly_listener.Split(',').GetValue(0).ToString());
+
             string conn_str = Secret.conn_str_sqlmi_fog_readonly_listener;
             //Console.WriteLine($"conn.ConnectionString = {conn_str.Split(';')?.GetValue(0)?.ToString()}");
 

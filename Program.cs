@@ -1,3 +1,5 @@
+using System.Net;
+
 namespace WebAPI
 {
     public class Program
@@ -6,8 +8,10 @@ namespace WebAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // DNS cache 갱신 주기
+            ServicePointManager.DnsRefreshTimeout = 0;
 
+            // Add services to the container.
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
