@@ -116,7 +116,7 @@ namespace WebAPI
                     var players = await conn.QueryAsync<ImChefModel_vote_aggregate>(
                         "select"
                         + " vote_count = count(v.vote_id)"
-                        + ", ranking = row_number() over(order by count(v.vote_id) desc)"
+                        + ", ranking = dense_rank() over(order by count(v.vote_id) desc)"
                         + ", v.player_id"
                         + ", player_name = max(p.player_name)"
                         + ", food_name = max(p.food_name)"
