@@ -123,7 +123,8 @@ namespace WebAPI
                         + " from DB1.food.vote v"
                         + " inner join DB1.food.player p on v.player_id = p.player_id"
                         + " group by v.player_id"
-                        + " order by vote_count desc;");
+                        + " order by vote_count desc;"
+                        );
 
                     if (conn.State == ConnectionState.Open) conn.Close();
 
